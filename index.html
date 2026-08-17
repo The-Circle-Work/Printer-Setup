@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaperCut Printer Setup — DIY Guide</title>
+<style>
+  :root{
+    --ink:#161B22;
+    --ink-soft:#3A4552;
+    --paper:#F6F4EF;
+    --paper-line:#E4E0D6;
+    --teal:#237A72;
+    --teal-deep:#154F4A;
+    --amber:#D98A2B;
+    --red:#B14B3E;
+    --white:#FFFFFF;
+    --radius:10px;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --disp: 'Space Grotesk', 'Segoe UI', sans-serif;
+    --body: 'Inter', 'Segoe UI', sans-serif;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;}
+  a{color:var(--teal-deep);}
+
+  header{
+    max-width:1080px;margin:0 auto;padding:24px 6vw 0;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .brand{font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:-0.01em;}
+  .brand span{color:var(--teal);}
+  nav a{font-size:13px;color:var(--ink-soft);text-decoration:none;margin-left:20px;font-weight:500;}
+  nav a:hover{color:var(--teal-deep);}
+
+  .hero{max-width:1080px;margin:0 auto;padding:44px 6vw 16px;}
+  .eyebrow{font-family:var(--mono);font-size:12px;color:var(--teal-deep);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:14px;}
+  h1{font-family:var(--disp);font-size:clamp(28px,4.4vw,46px);line-height:1.08;margin:0 0 14px;letter-spacing:-0.01em;max-width:20ch;}
+  .hero p.sub{font-size:16.5px;color:var(--ink-soft);max-width:60ch;margin:0 0 8px;}
+
+  /* ---------- SITE SELECTOR (signature element) ---------- */
+  .site-picker{
+    max-width:1080px;margin:26px auto 0;padding:0 6vw;
+  }
+  .site-picker .label{
+    font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;
+  }
+  .site-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;
+  }
+  .site-card{
+    border:1.5px solid var(--paper-line);
+    background:var(--white);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    cursor:pointer;
+    text-align:left;
+    font-family:var(--body);
+    transition:border-color .15s, background .15s;
+  }
+  .site-card .name{font-weight:600;font-size:14.5px;display:flex;justify-content:space-between;align-items:center;}
+  .site-card .ip{font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+  .site-card .dot{width:8px;height:8px;border-radius:50%;background:var(--paper-line);}
+  .site-card.active{border-color:var(--teal);background:#EFF7F5;}
+  .site-card.active .dot{background:var(--teal);}
+
+  section{max-width:1080px;margin:0 auto;padding:40px 6vw;border-top:1px solid var(--paper-line);}
+  h2{font-family:var(--disp);font-size:24px;margin:0 0 6px;letter-spacing:-0.01em;}
+  .section-hint{color:var(--ink-soft);font-size:14.5px;margin:0 0 26px;}
+
+  .callout{
+    border-left:3px solid var(--amber);
+    background:#FBF3E7;
+    border-radius:0 8px 8px 0;
+    padding:14px 18px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin-bottom:28px;
+  }
+  .callout strong{color:var(--ink);}
+  .callout.teal{border-left-color:var(--teal);background:#EFF7F5;}
+
+  .alt-method{
+    display:none;
+    margin-top:8px;
+    border:1px dashed var(--paper-line);
+    border-radius:var(--radius);
+    padding:20px 22px 8px;
+    background:#FBFAF7;
+  }
+  .alt-method.show{display:block;}
+  .alt-method .alt-title{
+    font-family:var(--disp);font-weight:600;font-size:15px;margin-bottom:4px;
+  }
+  .alt-method .alt-sub{font-size:13.5px;color:var(--ink-soft);margin-bottom:16px;}
+
+  .tabs{display:flex;gap:6px;margin-bottom:22px;border-bottom:1px solid var(--paper-line);}
+  .tab-btn{
+    font-family:var(--disp);font-weight:600;font-size:14px;background:none;border:none;
+    padding:10px 4px;margin-right:22px;cursor:pointer;color:var(--ink-soft);
+    border-bottom:2px solid transparent;transition:color .15s,border-color .15s;
+  }
+  .tab-btn.active{color:var(--ink);border-bottom-color:var(--teal);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
+  ol.steps{list-style:none;margin:0;padding:0;counter-reset:step;border-left:1.5px solid var(--paper-line);margin-left:6px;}
+  ol.steps li{counter-increment:step;position:relative;padding:2px 0 26px 34px;}
+  ol.steps li::before{
+    content:counter(step);position:absolute;left:-15px;top:-2px;width:28px;height:28px;
+    background:var(--ink);color:var(--paper);border-radius:50%;font-family:var(--mono);
+    font-size:13px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li strong{display:block;font-family:var(--disp);font-size:15.5px;margin-bottom:4px;}
+  ol.steps li p{margin:0 0 6px;color:var(--ink-soft);font-size:14.5px;}
+  .path-box{
+    display:inline-block;font-family:var(--mono);font-size:13px;background:#EFEAE0;
+    padding:7px 11px;border-radius:6px;color:var(--ink);margin:6px 0;
+  }
+  .cred-box{
+    display:flex;gap:22px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;
+    background:#EFEAE0;padding:10px 14px;border-radius:6px;margin:6px 0;color:var(--ink);
+  }
+  .cred-box b{color:var(--teal-deep);}
+
+  .acc-item{border:1px solid var(--paper-line);border-radius:var(--radius);margin-bottom:10px;background:var(--white);overflow:hidden;}
+  .acc-head{
+    width:100%;text-align:left;background:none;border:none;padding:15px 18px;font-weight:600;
+    font-size:14.5px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;color:var(--ink);
+  }
+  .acc-head .chev{transition:transform .2s;color:var(--teal-deep);}
+  .acc-item.open .chev{transform:rotate(45deg);}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .25s ease;padding:0 18px;}
+  .acc-body p{margin:0 0 15px;color:var(--ink-soft);font-size:14px;}
+
+  .support{
+    background:var(--ink);border-radius:14px;padding:30px;color:var(--paper);
+    display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;
+  }
+  .support h3{font-family:var(--disp);margin:0 0 4px;font-size:19px;}
+  .support p{margin:0;color:#B7C4C2;font-size:14px;max-width:44ch;}
+  .btn{
+    display:inline-block;background:var(--teal);color:var(--white);padding:11px 22px;border-radius:8px;
+    font-family:var(--disp);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap;
+  }
+  .btn:hover{background:var(--teal-deep);}
+  footer{text-align:center;padding:24px 6vw 40px;font-size:12.5px;color:var(--ink-soft);}
+
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto;}.acc-body{transition:none;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">Paper<span>Cut</span> Setup</div>
+  <nav>
+    <a href="#pick-site">Site</a>
+    <a href="#setup">Install</a>
+    <a href="#help">Help</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Self-serve printer setup</div>
+  <h1>Connect to the PaperCut printers at your site</h1>
+  <p class="sub">Pick your location below, then follow the steps for your laptop. Takes about 5–10 minutes, one time only.</p>
+</div>
+
+<div class="site-picker" id="pick-site">
+  <div class="label">1. Select your site</div>
+  <div class="site-grid" id="site-grid"></div>
+</div>
+
+<section id="setup">
+  <h2>Install the printer</h2>
+  <p class="section-hint">Selected site: <strong id="site-echo"></strong> — steps below update automatically for that server address.</p>
+
+  <div class="callout">
+    <strong>Shared login for first-time setup:</strong> Username <strong id="cred-echo-u">pcmf</strong> / Password <strong id="cred-echo-p">pcmf</strong>. This unlocks the shared PCClient folder only — once installed, PaperCut will ask for <em>your own</em> network username and password to actually release print jobs.
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="win">Windows 10 / 11</button>
+    <button class="tab-btn" data-tab="mac">macOS</button>
+  </div>
+
+  <!-- ===================== WINDOWS ===================== -->
+  <div class="tab-panel active" id="tab-win">
+    <ol class="steps">
+      <li>
+        <strong>Open the shared PCClient folder</strong>
+        <p>Press <strong>Win + R</strong> to open the Run box, type the address below, and press Enter.</p>
+        <div class="path-box" id="win-path-1">\\10.10.0.9\</div>
+      </li>
+      <li>
+        <strong>Sign in with the shared credentials</strong>
+        <p>A Windows Security popup asks for network credentials. Enter these, tick <strong>Remember my credentials</strong>, then click OK.</p>
+        <div class="cred-box"><span><b>Username:</b> pcmf</span><span><b>Password:</b> pcmf</span></div>
+      </li>
+      <li>
+        <strong>Open the PCClient installer</strong>
+        <p>In the folder that opens, double-click <strong>PCClient → win</strong>, then run <strong>client-local-install</strong>.</p>
+        <p>Windows will show a "We can't verify who created this file" warning — this is expected for an internal server. Click <strong>Run</strong>.</p>
+      </li>
+      <li>
+        <strong>Step through the PaperCut MF Client setup</strong>
+        <p>Accept the license agreement → Next. Leave the component set as <strong>Local Install (For all users)</strong> → Next → Install. If prompted, let the installer automatically close the running <code style="font-family:var(--mono)">pc-client</code> app to continue.</p>
+      </li>
+      <li>
+        <strong>Finish and verify your identity</strong>
+        <p>On the final screen, keep <strong>Launch client and verify my identity</strong> checked and click <strong>Finish</strong>.</p>
+      </li>
+      <li>
+        <strong>Log in with your own credentials</strong>
+        <p>A PaperCut login popup appears asking for printer access. Enter your own network username and password (not the shared pcmf login), tick <strong>Remember my identity</strong>, and click OK.</p>
+      </li>
+      <li>
+        <strong>Install the printer for your location</strong>
+        <p>Back in the shared folder, find the printer icon matching your floor/location (e.g. <code id="win-printer-example" style="font-family:var(--mono)">HC4_Printer_01</code>) and double-click it to install the print queue on your laptop.</p>
+      </li>
+      <li>
+        <strong>Print a test page</strong>
+        <p>The first time you print, a popup will ask for your credentials again — check <strong>Remember my credentials</strong> so you won't be asked every time.</p>
+      </li>
+    </ol>
+
+    <div class="alt-method" id="ubz-alt-method">
+      <div class="alt-title">Alternative for UBZ: Mobility Print installer</div>
+      <div class="alt-sub">UBZ also offers a simpler wizard-based installer — you can use this instead of the PCClient steps above.</div>
+      <ol class="steps">
+        <li>
+          <strong>Open the Mobility Print setup page</strong>
+          <p>Go to the address below in your browser and download the printer setup file.</p>
+          <div class="path-box">http://10.30.0.9:9163/client-setup/known-host/windows.html</div>
+        </li>
+        <li>
+          <strong>Run the downloaded installer</strong>
+          <p>Open the downloaded setup file to start the wizard.</p>
+        </li>
+        <li>
+          <strong>Choose the setup language</strong>
+          <p>Select <strong>English</strong>, then click <strong>OK</strong> to continue.</p>
+        </li>
+        <li>
+          <strong>Accept the license agreement</strong>
+          <p>Review the agreement, select <strong>I accept the agreement</strong>, then click <strong>Next</strong>.</p>
+        </li>
+        <li>
+          <strong>Let it retrieve the printer list</strong>
+          <p>The installer connects to the server and pulls the list of available printers.</p>
+        </li>
+        <li>
+          <strong>Select your printer</strong>
+          <p>Pick the correct printer from the list and click <strong>Next</strong>.</p>
+        </li>
+        <li>
+          <strong>Enter the shared credentials</strong>
+          <p>Enter the shared login below and click <strong>Next</strong>.</p>
+          <div class="cred-box"><span><b>User:</b> pcmf</span><span><b>Password:</b> pcmf</span></div>
+        </li>
+        <li>
+          <strong>Finish</strong>
+          <p>Click <strong>Finish</strong> to complete the install — the printer is ready to use.</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ===================== MAC ===================== -->
+  <div class="tab-panel" id="tab-mac">
+    <ol class="steps">
+      <li>
+        <strong>Connect to the shared server</strong>
+        <p>In Finder, click <strong>Go → Connect to Server</strong> (or press ⌘K). Enter the address below and click <strong>Connect</strong>.</p>
+        <div class="path-box" id="mac-path-1">smb://10.10.0.9/PCClient</div>
+      </li>
+      <li>
+        <strong>Sign in with the shared credentials</strong>
+        <p>Choose <strong>Registered User</strong>, enter the login below, tick <strong>Remember this password in my keychain</strong>, and click <strong>Connect</strong>.</p>
+        <div class="cred-box"><span><b>Name:</b> pcmf</span><span><b>Password:</b> pcmf</span></div>
+      </li>
+      <li>
+        <strong>Install the PCClient app</strong>
+        <p>Open the <strong>mac</strong> folder and run <strong>client-local-install</strong>. Click <strong>Yes</strong> when asked to install PCClient into the Applications folder.</p>
+      </li>
+      <li>
+        <strong>Log in with your own credentials</strong>
+        <p>A login popup appears asking for printer access. Enter your own network username and password (not the shared pcmf login), tick <strong>Remember my identity</strong>, and click OK.</p>
+      </li>
+      <li>
+        <strong>Open the printer setup page in your browser</strong>
+        <p>Go to the address below, click <strong>Download</strong> to get the Mobility Print client, then open the downloaded <strong>.pkg</strong> file.</p>
+        <div class="path-box" id="mac-path-2">http://10.10.0.9:9163/client-setup/macos.html</div>
+      </li>
+      <li>
+        <strong>Run the Mobility Print installer</strong>
+        <p>Click through <strong>Continue → Agree</strong> to the license, then <strong>Install</strong>. Enter your Mac's admin password when prompted, then click <strong>Install Software</strong>.</p>
+      </li>
+      <li>
+        <strong>Confirm installation and print a test page</strong>
+        <p>You'll see "The installation was successful" — click <strong>Close</strong>. Your site's printers will now appear normally in any app's Print dialog.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section id="help">
+  <h2>Common issues</h2>
+  <p class="section-hint">Try the matching fix before contacting the front desk.</p>
+
+  <div class="acc-item">
+    <button class="acc-head">"The user name or password is incorrect" on the shared folder <span class="chev">+</span></button>
+    <div class="acc-body">
+      <p>Double-check you typed <code style="font-family:var(--mono)">pcmf</code> / <code style="font-family:var(--mono)">pcmf</code> exactly (lowercase, no spaces) — this is the shared login for the install step only, separate from your personal network login used later in PaperCut.</p>
+    </div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-head">Can't reach the server address at all <span class="chev">+</span></button>
+    <div class="acc-body">
+      <p>Confirm you're on the office/workspace network, not a personal hotspot or guest Wi-Fi — these server addresses are only reachable from the internal network at each site.</p>
+    </div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-head">Windows blocks client-local-install with a security warning <span class="chev">+</span></button>
+    <div class="acc-body">
+      <p>This warning is expected because the installer runs from a network path rather than a local download. As long as the address matches your site's server, click <strong>Run</strong> to continue.</p>
+    </div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-head">Mac: printers don't show up after installing Mobility Print <span class="chev">+</span></button>
+    <div class="acc-body">
+      <p>Reopen the client-setup page for your site and re-run the installer — Mobility Print sometimes needs the browser step repeated once after the PCClient install finishes.</p>
+    </div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-head">Not sure which Windows method to use at UBZ <span class="chev">+</span></button>
+    <div class="acc-body">
+      <p>Either works. The PCClient steps match every other site, so use those if you want one consistent process. The Mobility Print installer (shown below the main steps when UBZ is selected) is a shorter wizard if you'd rather skip the shared-folder step entirely.</p>
+    </div>
+  </div>
+  <div class="acc-item">
+    <button class="acc-head">Every print job asks for credentials again <span class="chev">+</span></button>
+    <div class="acc-body">
+      <p>Make sure you ticked "Remember my identity" / "Remember my credentials" at the login popup. If it keeps resetting, your account password may have changed recently — re-enter it once and tick remember again.</p>
+    </div>
+  </div>
+
+  <div class="support" style="margin-top:32px;">
+    <div>
+      <h3>Still stuck?</h3>
+      <p>Message the front desk with your site name, OS, and the exact error text — that's usually enough to fix it without a call.</p>
+    </div>
+    <a class="btn" href="mailto:help@example.com">Contact support</a>
+  </div>
+</section>
+
+<footer>
+  PaperCut printer setup guide · Internal use · Last reviewed by workspace IT
+</footer>
+
+<script>
+  const SITES = [
+    { name: "Millennium City Centre", ip: "10.10.0.9",  printerExample: "HC4_Printer_01" },
+    { name: "UTC",                    ip: "10.20.0.11", printerExample: "HC5_Printer_1" },
+    { name: "Omaxe",                  ip: "10.7.0.11",  printerExample: null },
+    { name: "PSP",                    ip: "10.5.48.11", printerExample: null },
+    { name: "UBZ",                    ip: "10.30.0.9",  printerExample: null, hasMobilityAlt: true },
+    { name: "BLR",                    ip: "10.60.0.9",  printerExample: "tcw_blr" },
+  ];
+
+  let current = SITES[0];
+
+  const grid = document.getElementById('site-grid');
+  SITES.forEach((site, idx) => {
+    const card = document.createElement('button');
+    card.className = 'site-card' + (idx === 0 ? ' active' : '');
+    card.innerHTML = `<div class="name">${site.name}<span class="dot"></span></div><div class="ip">${site.ip}</div>`;
+    card.addEventListener('click', () => {
+      current = site;
+      document.querySelectorAll('.site-card').forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      updateSite();
+    });
+    grid.appendChild(card);
+  });
+
+  function updateSite(){
+    document.getElementById('site-echo').textContent = current.name + ' (' + current.ip + ')';
+    document.getElementById('win-path-1').textContent = `\\\\${current.ip}\\`;
+    document.getElementById('mac-path-1').textContent = `smb://${current.ip}/PCClient`;
+    document.getElementById('mac-path-2').textContent = `http://${current.ip}:9163/client-setup/macos.html`;
+    document.getElementById('win-printer-example').textContent = current.printerExample || 'your-site-printer-name';
+    document.getElementById('ubz-alt-method').classList.toggle('show', !!current.hasMobilityAlt);
+  }
+  updateSite();
+
+  // Tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Accordion
+  document.querySelectorAll('.acc-item').forEach(item => {
+    const head = item.querySelector('.acc-head');
+    const body = item.querySelector('.acc-body');
+    head.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.acc-item').forEach(i => {
+        i.classList.remove('open');
+        i.querySelector('.acc-body').style.maxHeight = null;
+        i.querySelector('.acc-body').style.padding = '0 18px';
+      });
+      if (!isOpen) {
+        item.classList.add('open');
+        body.style.padding = '14px 18px 4px';
+        body.style.maxHeight = body.scrollHeight + 40 + 'px';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
