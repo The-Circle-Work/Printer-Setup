@@ -126,6 +126,19 @@
   }
   .cred-box b{color:var(--teal-deep);}
 
+  .shots{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 4px;}
+  .shots.single .shot{max-width:420px;}
+  .shot{
+    flex:1 1 260px;max-width:340px;
+    border:1px solid var(--paper-line);border-radius:8px;overflow:hidden;
+    background:var(--white);
+  }
+  .shot img{display:block;width:100%;height:auto;}
+  .shot figcaption{
+    font-family:var(--mono);font-size:11px;color:var(--ink-soft);
+    padding:6px 10px;border-top:1px solid var(--paper-line);background:#FBFAF7;
+  }
+
   .acc-item{border:1px solid var(--paper-line);border-radius:var(--radius);margin-bottom:10px;background:var(--white);overflow:hidden;}
   .acc-head{
     width:100%;text-align:left;background:none;border:none;padding:15px 18px;font-weight:600;
@@ -194,32 +207,45 @@
         <strong>Open the shared PCClient folder</strong>
         <p>Press <strong>Win + R</strong> to open the Run box, type the address below, and press Enter.</p>
         <div class="path-box" id="win-path-1">\\10.10.0.9\</div>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/windows/01-run-dialog.jpg" alt="Windows Run dialog" loading="lazy"><figcaption>The Run box</figcaption></figure></div>
       </li>
       <li>
         <strong>Sign in with the shared credentials</strong>
         <p>A Windows Security popup asks for network credentials. Enter these, tick <strong>Remember my credentials</strong>, then click OK.</p>
         <div class="cred-box"><span><b>Username:</b> pcmf</span><span><b>Password:</b> pcmf</span></div>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/windows/02-credentials-popup.jpg" alt="Windows network credentials popup" loading="lazy"><figcaption>Windows Security popup</figcaption></figure></div>
       </li>
       <li>
         <strong>Open the PCClient installer</strong>
         <p>In the folder that opens, double-click <strong>PCClient → win</strong>, then run <strong>client-local-install</strong>.</p>
         <p>Windows will show a "We can't verify who created this file" warning — this is expected for an internal server. Click <strong>Run</strong>.</p>
+        <div class="shots">
+          <figure class="shot"><img src="assets/screenshots/windows/03a-open-installer.jpg" alt="win folder with client-local-install highlighted" loading="lazy"><figcaption>win folder → client-local-install</figcaption></figure>
+          <figure class="shot"><img src="assets/screenshots/windows/03b-security-warning.jpg" alt="Open File Security Warning dialog" loading="lazy"><figcaption>Security warning — click Run</figcaption></figure>
+        </div>
       </li>
       <li>
         <strong>Step through the PaperCut MF Client setup</strong>
         <p>Accept the license agreement → Next. Leave the component set as <strong>Local Install (For all users)</strong> → Next → Install. If prompted, let the installer automatically close the running <code style="font-family:var(--mono)">pc-client</code> app to continue.</p>
+        <div class="shots">
+          <figure class="shot"><img src="assets/screenshots/windows/04a-license.jpg" alt="PaperCut MF Client license agreement screen" loading="lazy"><figcaption>Accept the license</figcaption></figure>
+          <figure class="shot"><img src="assets/screenshots/windows/04b-components.jpg" alt="Select Components screen, Local Install selected" loading="lazy"><figcaption>Local Install (For all users)</figcaption></figure>
+        </div>
       </li>
       <li>
         <strong>Finish and verify your identity</strong>
         <p>On the final screen, keep <strong>Launch client and verify my identity</strong> checked and click <strong>Finish</strong>.</p>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/windows/05-finish-wizard.jpg" alt="Completing the PaperCut MF Client Setup Wizard screen" loading="lazy"><figcaption>Finish setup</figcaption></figure></div>
       </li>
       <li>
         <strong>Log in with your own credentials</strong>
         <p>A PaperCut login popup appears asking for printer access. Enter your own network username and password (not the shared pcmf login), tick <strong>Remember my identity</strong>, and click OK.</p>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/windows/06-login-popup.jpg" alt="PaperCut login popup asking for printer access" loading="lazy"><figcaption>Login — verify your identity</figcaption></figure></div>
       </li>
       <li>
         <strong>Install the printer for your location</strong>
         <p>Back in the shared folder, find the printer icon matching your floor/location (e.g. <code id="win-printer-example" style="font-family:var(--mono)">HC4_Printer_01</code>) and double-click it to install the print queue on your laptop.</p>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/windows/07-install-printer.jpg" alt="Shared folder showing printer icons to double-click" loading="lazy"><figcaption>Printer icons in the shared folder</figcaption></figure></div>
       </li>
       <li>
         <strong>Print a test page</strong>
@@ -227,43 +253,51 @@
       </li>
     </ol>
 
-    <div class="alt-method" id="ubz-alt-method">
-      <div class="alt-title">Alternative for UBZ: Mobility Print installer</div>
-      <div class="alt-sub">UBZ also offers a simpler wizard-based installer — you can use this instead of the PCClient steps above.</div>
+    <div class="alt-method" id="mobility-alt-method">
+      <div class="alt-title">Alternative for <span id="mob-alt-site">UBZ</span>: Mobility Print installer</div>
+      <div class="alt-sub"><span id="mob-alt-site-2">This site</span> also offers a simpler wizard-based installer — you can use this instead of the PCClient steps above.</div>
       <ol class="steps">
         <li>
           <strong>Open the Mobility Print setup page</strong>
           <p>Go to the address below in your browser and download the printer setup file.</p>
-          <div class="path-box">http://10.30.0.9:9163/client-setup/known-host/windows.html</div>
+          <div class="path-box" id="mob-path-1">http://10.30.0.9:9163/client-setup/known-host/windows.html</div>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/01-download-page.jpg" alt="Set up printing for Windows download page" loading="lazy"><figcaption>Mobility Print download page</figcaption></figure></div>
         </li>
         <li>
           <strong>Run the downloaded installer</strong>
           <p>Open the downloaded setup file to start the wizard.</p>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/02-downloaded-file.jpg" alt="Downloaded Mobility Print installer in Downloads folder" loading="lazy"><figcaption>Downloaded installer</figcaption></figure></div>
         </li>
         <li>
           <strong>Choose the setup language</strong>
           <p>Select <strong>English</strong>, then click <strong>OK</strong> to continue.</p>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/03-select-language.jpg" alt="Select Setup Language dialog" loading="lazy"><figcaption>Select Setup Language</figcaption></figure></div>
         </li>
         <li>
           <strong>Accept the license agreement</strong>
           <p>Review the agreement, select <strong>I accept the agreement</strong>, then click <strong>Next</strong>.</p>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/04-accept-license.jpg" alt="License Agreement screen with I accept the agreement selected" loading="lazy"><figcaption>License agreement</figcaption></figure></div>
         </li>
         <li>
           <strong>Let it retrieve the printer list</strong>
           <p>The installer connects to the server and pulls the list of available printers.</p>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/05-retrieving-printer-list.jpg" alt="Retrieving printer list progress bar" loading="lazy"><figcaption>Retrieving printer list…</figcaption></figure></div>
         </li>
         <li>
           <strong>Select your printer</strong>
           <p>Pick the correct printer from the list and click <strong>Next</strong>.</p>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/06-select-printer.jpg" alt="Printer selection checklist" loading="lazy"><figcaption>Printer selection</figcaption></figure></div>
         </li>
         <li>
           <strong>Enter the shared credentials</strong>
           <p>Enter the shared login below and click <strong>Next</strong>.</p>
           <div class="cred-box"><span><b>User:</b> pcmf</span><span><b>Password:</b> pcmf</span></div>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/07-enter-credentials.jpg" alt="Your network login form" loading="lazy"><figcaption>Your network login</figcaption></figure></div>
         </li>
         <li>
           <strong>Finish</strong>
           <p>Click <strong>Finish</strong> to complete the install — the printer is ready to use.</p>
+          <div class="shots single"><figure class="shot"><img src="assets/screenshots/mobility/08-finish.jpg" alt="Completing the Mobility Print Printer Setup Wizard screen" loading="lazy"><figcaption>Setup complete</figcaption></figure></div>
         </li>
       </ol>
     </div>
@@ -276,32 +310,45 @@
         <strong>Connect to the shared server</strong>
         <p>In Finder, click <strong>Go → Connect to Server</strong> (or press ⌘K). Enter the address below and click <strong>Connect</strong>.</p>
         <div class="path-box" id="mac-path-1">smb://10.10.0.9/PCClient</div>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/macos/01-connect-to-server.jpg" alt="macOS Connect to Server dialog" loading="lazy"><figcaption>Connect to Server</figcaption></figure></div>
       </li>
       <li>
         <strong>Sign in with the shared credentials</strong>
         <p>Choose <strong>Registered User</strong>, enter the login below, tick <strong>Remember this password in my keychain</strong>, and click <strong>Connect</strong>.</p>
         <div class="cred-box"><span><b>Name:</b> pcmf</span><span><b>Password:</b> pcmf</span></div>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/macos/02-credentials-popup.jpg" alt="macOS name and password prompt for the server" loading="lazy"><figcaption>Registered User login</figcaption></figure></div>
       </li>
       <li>
         <strong>Install the PCClient app</strong>
         <p>Open the <strong>mac</strong> folder and run <strong>client-local-install</strong>. Click <strong>Yes</strong> when asked to install PCClient into the Applications folder.</p>
+        <div class="shots">
+          <figure class="shot"><img src="assets/screenshots/macos/03a-pcclient-folder.jpg" alt="pcclient folder showing win, mac and linux folders" loading="lazy"><figcaption>pcclient folder → mac</figcaption></figure>
+          <figure class="shot"><img src="assets/screenshots/macos/03b-install-to-applications.jpg" alt="Install PCClient into the Applications Folder prompt" loading="lazy"><figcaption>Install into Applications</figcaption></figure>
+        </div>
       </li>
       <li>
         <strong>Log in with your own credentials</strong>
         <p>A login popup appears asking for printer access. Enter your own network username and password (not the shared pcmf login), tick <strong>Remember my identity</strong>, and click OK.</p>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/macos/04-login-popup.jpg" alt="macOS login popup asking for printer access" loading="lazy"><figcaption>Login — verify your identity</figcaption></figure></div>
       </li>
       <li>
         <strong>Open the printer setup page in your browser</strong>
         <p>Go to the address below, click <strong>Download</strong> to get the Mobility Print client, then open the downloaded <strong>.pkg</strong> file.</p>
         <div class="path-box" id="mac-path-2">http://10.10.0.9:9163/client-setup/macos.html</div>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/macos/05-mobility-print-page.jpg" alt="Set up printing on your Mac download page" loading="lazy"><figcaption>Mobility Print download page</figcaption></figure></div>
       </li>
       <li>
         <strong>Run the Mobility Print installer</strong>
         <p>Click through <strong>Continue → Agree</strong> to the license, then <strong>Install</strong>. Enter your Mac's admin password when prompted, then click <strong>Install Software</strong>.</p>
+        <div class="shots">
+          <figure class="shot"><img src="assets/screenshots/macos/06a-installer-welcome.jpg" alt="Welcome to the PaperCut Mobility Print installer" loading="lazy"><figcaption>Installer wizard</figcaption></figure>
+          <figure class="shot"><img src="assets/screenshots/macos/06b-install-password.jpg" alt="macOS admin password prompt for Install Software" loading="lazy"><figcaption>Enter admin password</figcaption></figure>
+        </div>
       </li>
       <li>
         <strong>Confirm installation and print a test page</strong>
         <p>You'll see "The installation was successful" — click <strong>Close</strong>. Your site's printers will now appear normally in any app's Print dialog.</p>
+        <div class="shots single"><figure class="shot"><img src="assets/screenshots/macos/07-install-successful.jpg" alt="The installation was successful confirmation screen" loading="lazy"><figcaption>Installation successful</figcaption></figure></div>
       </li>
     </ol>
   </div>
@@ -368,7 +415,7 @@
     { name: "Omaxe",                  ip: "10.7.0.11",  printerExample: null },
     { name: "PSP",                    ip: "10.5.48.11", printerExample: null },
     { name: "UBZ",                    ip: "10.30.0.9",  printerExample: null, hasMobilityAlt: true },
-    { name: "BLR",                    ip: "10.60.0.9",  printerExample: "tcw_blr" },
+    { name: "BLR",                    ip: "10.60.0.9",  printerExample: "tcw_blr", hasMobilityAlt: true },
   ];
 
   let current = SITES[0];
@@ -393,7 +440,10 @@
     document.getElementById('mac-path-1').textContent = `smb://${current.ip}/PCClient`;
     document.getElementById('mac-path-2').textContent = `http://${current.ip}:9163/client-setup/macos.html`;
     document.getElementById('win-printer-example').textContent = current.printerExample || 'your-site-printer-name';
-    document.getElementById('ubz-alt-method').classList.toggle('show', !!current.hasMobilityAlt);
+    document.getElementById('mobility-alt-method').classList.toggle('show', !!current.hasMobilityAlt);
+    document.getElementById('mob-alt-site').textContent = current.name;
+    document.getElementById('mob-alt-site-2').textContent = current.name;
+    document.getElementById('mob-path-1').textContent = `http://${current.ip}:9163/client-setup/known-host/windows.html`;
   }
   updateSite();
 
